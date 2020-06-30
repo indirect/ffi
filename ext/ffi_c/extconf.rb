@@ -6,8 +6,9 @@ if RUBY_ENGINE == 'ruby' || RUBY_ENGINE == 'rbx'
 
   def system_libffi_usable?
     # We need pkg_config or ffi.h
-    libffi_ok = pkg_config("libffi") ||
-        have_header("ffi.h") ||
+    libffi_ok = pkg_config("libffi")
+    libffi_ok = nil unless File.exist?(libffi_ok.first)
+    libffi_ok = have_header("ffi.h") ||
         find_header("ffi.h", "/usr/local/include", "/usr/include/ffi",
                     "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/ffi",
                     "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/ffi") ||
